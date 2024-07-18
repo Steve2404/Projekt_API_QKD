@@ -1,12 +1,18 @@
 from flask import Flask
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
+from config import Config
+from models import db
+from resources.auth import auth_bp
 
 
-if __name__ == '__main__':
-    app.run()
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    jwt = JWTManager(app)
+
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    return app
