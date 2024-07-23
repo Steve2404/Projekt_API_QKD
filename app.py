@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from config import Config
 from models import db
 from resources.auth import auth_bp
+from resources.keys import keys_bp
 
 
 def create_app():
@@ -14,5 +15,6 @@ def create_app():
     jwt = JWTManager(app)
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(keys_bp, url_prefix='/api')
 
     return app
